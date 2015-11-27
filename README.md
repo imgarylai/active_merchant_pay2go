@@ -70,6 +70,7 @@ end
 ```
 
 To customize settings, you can read the documents.
+Or you can read [code](https://github.com/imgarylai/active_merchant_pay2go/blob/master/lib/offsite_payments/integrations/pay2go.rb#L47-L99) here!
 
 ## Contributing
 
