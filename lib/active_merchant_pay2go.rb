@@ -1,5 +1,12 @@
-require "active_merchant_pay2go/version"
+require 'action_view'
+require 'active_merchant_pay2go/version'
+require 'active_merchant'
+require 'offsite_payments'
 
-module ActiveMerchantPay2go
-  # Your code goes here...
+module OffsitePayments
+  module Integrations
+    autoload :Pay2go, 'offsite_payments/integrations/pay2go'
+  end
 end
+
+ActionView::Base.send(:include, OffsitePayments::ActionViewHelper)
