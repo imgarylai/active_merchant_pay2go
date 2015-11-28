@@ -1,11 +1,10 @@
 module Pay2go
   module Generators
-    class Pay2goGenerator < Rails::Generators::NamedBase
-
+    class InstallGenerator < Rails::Generators::Base
       source_root File.expand_path('../templates', __FILE__)
-      namespace :pay2go
 
-      desc "Generates Pay2go initializer"
+      desc "Creates a Pay2go initialize"
+      class_option :orm
 
       def copy_initializer
         template "pay2go.rb", "config/initializers/pay2go.rb"
