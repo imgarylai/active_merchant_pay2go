@@ -26,13 +26,8 @@ $ bundle
 
 2. Create file `config/initializers/pay2go.rb`
 
-``` rb
-OffsitePayments::Integrations::Pay2go.setup do |pay2go|
-  # You have to apply credential below by yourself.
-  pay2go.merchant_id = ''
-  pay2go.hash_key    = ''
-  pay2go.hash_iv     = ''
-end
+``` sh
+rails g pay2go:install
 ```
 
 3. Environment configuration:
