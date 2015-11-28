@@ -1,6 +1,3 @@
-#!/usr/bin/env ruby
-$:.unshift File.expand_path('../../lib', __FILE__)
-
 begin
   require 'rubygems'
   require 'bundler'

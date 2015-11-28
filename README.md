@@ -24,14 +24,14 @@ $ bundle
 
 1. I would suggest reading the [official API](https://www.pay2go.com/dw_files/info_api/pay2go_gateway_MPGapi_V1_1_4.pdf) first.
 
-2. Create file `config/initializers/allpay.rb`
+2. Create file `config/initializers/pay2go.rb`
 
 ``` rb
 OffsitePayments::Integrations::Pay2go.setup do |pay2go|
   # You have to apply credential below by yourself.
-  pay2go.merchant_id = 'xxx'
-  pay2go.hash_key    = 'xxx'
-  pay2go.hash_iv     = 'xxx'
+  pay2go.merchant_id = ''
+  pay2go.hash_key    = ''
+  pay2go.hash_iv     = ''
 end
 ```
 
