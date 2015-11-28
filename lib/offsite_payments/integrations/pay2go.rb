@@ -6,7 +6,7 @@ module OffsitePayments #:nodoc:
     module Pay2go
 
       VERSION = '1.2'
-      RESPOND_TYPE = 'JSON'
+      RESPOND_TYPE = 'String'
       CHECK_FIELDS = [
         'Amt',
         'MerchantID',
