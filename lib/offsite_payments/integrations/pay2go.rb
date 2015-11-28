@@ -7,12 +7,19 @@ module OffsitePayments #:nodoc:
 
       VERSION = '1.2'
       RESPOND_TYPE = 'String'
-      CHECK_FIELDS = [
+      CHECK_VALUE_FIELDS = [
         'Amt',
         'MerchantID',
         'MerchantOrderNo',
         'TimeStamp',
         'Version'
+      ]
+
+      CHECK_CODE_FIELDS = [
+        'Amt',
+        'MerchantID',
+        'MerchantOrderNo',
+        'TradeNo'
       ]
 
       mattr_accessor :service_url
@@ -110,7 +117,7 @@ module OffsitePayments #:nodoc:
         end
 
         def encrypted_data
-          raw_data = OffsitePayments::Integrations::Pay2go::CHECK_FIELDS.sort.map { |field|
+          raw_data = OffsitePayments::Integrations::Pay2go::CHECK_VALUE_FIELDS.sort.map { |field|
             "#{field}=#{@fields[field]}"
           }.join('&')
 
@@ -159,11 +166,11 @@ module OffsitePayments #:nodoc:
 
           checksum = params_copy['Result']['CheckCode']
 
-          raw_data = OffsitePayments::Integrations::Pay2go::CHECK_FIELDS.sort.map { |field|
-            "#{field}=#{params_copy['Result'][field]}"
+          raw_data = OffsitePayments::Integrations::Pay2go::CHECK_CODE_FIELDS.sort.map { |field|
+            "#{field}=#{params_copy[field]}"
           }.join('&')
 
-          hash_raw_data = "HashKey=#{OffsitePayments::Integrations::Allpay.hash_key}&#{raw_data}&HashIV=#{OffsitePayments::Integrations::Allpay.hash_iv}"
+          hash_raw_data = "HashIV=#{OffsitePayments::Integrations::Pay2go.hash_iv}&#{raw_data}&HashKey=#{OffsitePayments::Integrations::Pay2go.hash_key}"
 
           Digest::SHA256.hexdigest(hash_raw_data).upcase == checksum
         end
