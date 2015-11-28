@@ -131,20 +131,13 @@ module OffsitePayments #:nodoc:
       end
 
       class Notification < OffsitePayments::Notification
-        def status
+
+        def success?
           @params['Status'] == 'SUCCESS' ? true : false
         end
 
-        def message
-          @params['Message']
-        end
-
-        def result
-          @params['Result']
-        end
-
         # TODO 使用查詢功能實作 acknowledge
-        # Allpay 沒有遠端驗證功能，
+        # Pay2go 沒有遠端驗證功能，
         # 而以 checksum_ok? 代替
         def acknowledge
           checksum_ok?
@@ -164,7 +157,7 @@ module OffsitePayments #:nodoc:
         def checksum_ok?
           params_copy = @params.clone
 
-          checksum = params_copy['Result']['CheckCode']
+          checksum = params_copy['CheckCode']
 
           raw_data = OffsitePayments::Integrations::Pay2go::CHECK_CODE_FIELDS.sort.map { |field|
             "#{field}=#{params_copy[field]}"
@@ -173,6 +166,136 @@ module OffsitePayments #:nodoc:
           hash_raw_data = "HashIV=#{OffsitePayments::Integrations::Pay2go.hash_iv}&#{raw_data}&HashKey=#{OffsitePayments::Integrations::Pay2go.hash_key}"
 
           Digest::SHA256.hexdigest(hash_raw_data).upcase == checksum
+        end
+
+        def status
+          @params['Status']
+        end
+
+        def message
+          @params['Message']
+        end
+
+        def merchant_id
+          @params['MerchantID']
+        end
+
+        def amt
+          @params['Amt']
+        end
+
+        def trade_no
+          @params['TradeNo']
+        end
+
+        def merchant_order_no
+          @params['MerchantOrderNo']
+        end
+
+        def payment_type
+          @params['PaymentType']
+        end
+
+        def respond_type
+          @params['RespondType']
+        end
+
+        def check_code
+          @params['CheckCode']
+        end
+
+        # 所有支付方式共同回傳參數
+
+        def pay_time
+          @params['PayTime']
+        end
+
+        def ip
+          @params['IP']
+        end
+
+        def escrow_bank
+          @params['EscrowBank']
+        end
+
+        def token_use_status
+          @params['TokenUseStatus']
+        end
+
+        # 信用卡支付回傳參數
+
+        def respond_code
+          @params['RespondCode']
+        end
+
+        def auth
+          @params['Auth']
+        end
+
+        def card_6_no
+          @params['Card6No']
+        end
+
+        def card_4_no
+          @params['Card4No']
+        end
+
+        def inst
+          @params['Inst']
+        end
+
+        def inst_first
+          @params['InstFirst']
+        end
+
+        def inst_each
+          @params['InstEach']
+        end
+
+        def eci
+          @params['ECI']
+        end
+
+        # WEBATM、ATM 繳費回傳參數
+
+        def pay_bank_code
+          @params['PayBankCode']
+        end
+
+        def payer_account_5_code
+          @params['PayerAccount5Code']
+        end
+
+        # 超商代碼繳費回傳參數
+
+        def code_no
+          @params['CodeNo']
+        end
+
+        # ATM 轉帳回傳參數
+        def bank_code
+          @params['BankCode']
+        end
+
+
+        # 條碼繳費回傳參數
+
+        def barcode_1
+          @params['Barcode_1']
+        end
+
+        def barcode_2
+          @params['Barcode_2']
+        end
+
+        def barcode_3
+          @params['Barcode_3']
+        end
+
+        # 取號完成系統回傳參數
+
+        def expire_date
+          @params['ExpireDate']
         end
 
       end
