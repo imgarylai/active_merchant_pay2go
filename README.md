@@ -22,7 +22,7 @@ $ bundle
 
 ## Setup
 
-1. I would suggest reading the [official API](https://www.pay2go.com/dw_files/info_api/pay2go_gateway_Transaction_api_V1_0_2.pdf) first.
+1. I would suggest reading the [official API](https://www.pay2go.com/dw_files/info_api/pay2go_gateway_MPGapi_V1_1_4.pdf) first.
 
 2. Create file `config/initializers/allpay.rb`
 
