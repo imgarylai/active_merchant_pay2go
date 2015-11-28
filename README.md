@@ -35,14 +35,14 @@ rails g pay2go:install
 ```rb
 # config/environments/development.rb
 config.after_initialize do
-  ActiveMerchant::Billing::Base.integration_mode = :development
+  ActiveMerchant::Billing::Base.mode = :development
 end
 ```
 
 ```rb
 # config/environments/production.rb
 config.after_initialize do
-  ActiveMerchant::Billing::Base.integration_mode = :production
+  ActiveMerchant::Billing::Base.mode = :production
 end
 ```
 
