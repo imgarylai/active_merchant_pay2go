@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/imgarylai/active_merchant_pay2go.svg?branch=master)](https://travis-ci.org/imgarylai/active_merchant_pay2go)
+[![Code Climate](https://codeclimate.com/github/imgarylai/active_merchant_pay2go/badges/gpa.svg)](https://codeclimate.com/github/imgarylai/active_merchant_pay2go)
 
 # ActiveMerchantPay2go
 
