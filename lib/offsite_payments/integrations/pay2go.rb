@@ -122,8 +122,6 @@ module OffsitePayments #:nodoc:
 
           hash_raw_data = "HashKey=#{OffsitePayments::Integrations::Pay2go.hash_key}&#{raw_data}&HashIV=#{OffsitePayments::Integrations::Pay2go.hash_iv}"
 
-          binding.pry if OffsitePayments::Integrations::Pay2go.debug
-
           add_field 'CheckValue', Digest::SHA256.hexdigest(hash_raw_data).upcase
         end
 
