@@ -58,7 +58,6 @@ module OffsitePayments #:nodoc:
         mapping :lang_type, 'LangType'
         # 廠商交易編號 *
         mapping :merchant_order_no, 'MerchantOrderNo'
-        mapping :order, 'MerchantOrderNo' # AM common
         # 交易金額
         mapping :amt, 'Amt'
         mapping :amount, 'Amt' # AM common
