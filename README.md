@@ -4,8 +4,6 @@ This gem integrate Rails with [pay2go(智付寶)](https://www.pay2go.com/).
 
 It was inspired by [active_merchant_allpay](https://github.com/xwaynec/active_merchant_allpay).
 
-*WARNING:* This gem is not fully tested.
-
 ## Installation
 
 Add this line to your application's Gemfile:
@@ -30,7 +28,18 @@ $ bundle
 rails g pay2go:install
 ```
 
-3. Environment configuration:
+3. Go to Pay2go and get your credential information. Then fill in `config/initializers/pay2go.rb`
+
+```rb
+OffsitePayments::Integrations::Pay2go.setup do |pay2go|
+  # You have to apply credential below by yourself.
+  pay2go.merchant_id = '123456'
+  pay2go.hash_key    = 'xxx'
+  pay2go.hash_iv     = 'yyy'
+end
+```
+
+4. Environment configuration:
 
 ```rb
 # config/environments/development.rb
@@ -48,29 +57,31 @@ end
 
 ## Example
 
-```rb
+```
 <% payment_service_for  @order,
                         @order.user.email,
                         service: :pay2go,
                         html: { :id => 'pay2go-form', :method => :post } do |service| %>
-  <% service.encrypted_data %>
   <% service.time_stamp @order.created_at %>
   <% service.merchant_order_no @order.id %>
   <% service.amt @order.total_amount.to_i %>
   <% service.item_desc @order.description %>
   <% service.email @order.user.email %>
   <% service.login_type 0 %>
+  <% service.encrypted_data %>
   <%= submit_tag '付款' %>
 <% end %>
 ```
+This example code only fulfill the min requirements.
 
-To customize settings, you can read the documents.
-Or you can read [code](https://github.com/imgarylai/active_merchant_pay2go/blob/master/lib/offsite_payments/integrations/pay2go.rb#L47-L99) here!
+To customize settings, you should read the documents.
+I put some comments in the [code](https://github.com/imgarylai/active_merchant_pay2go/blob/master/lib/offsite_payments/integrations/pay2go.rb) as well!
+
+Here is an [example app](https://github.com/imgarylai/rails_active_merchant_pay2go) though it is really rough.
 
 ## Contributing
 
 Bug reports and pull requests are welcome on GitHub at https://github.com/imgarylai/active_merchant_pay2go. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](contributor-covenant.org) code of conduct.
-
 
 ## License
 
