@@ -20,16 +20,14 @@ $ bundle
 
 ## Setup
 
-1. I would suggest reading the [official API](https://www.pay2go.com/dw_files/info_api/pay2go_gateway_MPGapi_V1_1_4.pdf) first.
+- I would suggest reading the [official API](https://www.pay2go.com/dw_files/info_api/pay2go_gateway_MPGapi_V1_1_4.pdf) first.
 
-2. Create file `config/initializers/pay2go.rb`
-
+- Create file `config/initializers/pay2go.rb`
 ``` sh
 rails g pay2go:install
 ```
 
-3. Go to Pay2go and get your credential information. Then fill in `config/initializers/pay2go.rb`
-
+- Go to Pay2go and get your credential information. Then fill in `config/initializers/pay2go.rb`
 ```rb
 OffsitePayments::Integrations::Pay2go.setup do |pay2go|
   # You have to apply credential below by yourself.
@@ -39,15 +37,13 @@ OffsitePayments::Integrations::Pay2go.setup do |pay2go|
 end
 ```
 
-4. Environment configuration:
-
+- Environment configuration:
 ```rb
 # config/environments/development.rb
 config.after_initialize do
   ActiveMerchant::Billing::Base.mode = :development
 end
 ```
-
 ```rb
 # config/environments/production.rb
 config.after_initialize do
