@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/imgarylai/active_merchant_pay2go.svg?branch=master)](https://travis-ci.org/imgarylai/active_merchant_pay2go)
+
 # ActiveMerchantPay2go
 
 This gem integrate Rails with [pay2go(智付寶)](https://www.pay2go.com/).
