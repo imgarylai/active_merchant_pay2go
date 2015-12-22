@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class Pay2goNotificationTest < Test::Unit::TestCase
+class Pay2goNotificationTest < Minitest::Test
   include OffsitePayments::Integrations
 
   def setup

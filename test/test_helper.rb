@@ -1,6 +1,7 @@
 require 'simplecov'
 require 'active_merchant_pay2go'
-require 'test/unit'
+require 'minitest/autorun'
+require 'minitest/reporters'
 
 begin
   require 'rubygems'
@@ -12,4 +13,5 @@ rescue LoadError => e
 end
 
 SimpleCov.start
+Minitest::Reporters.use! Minitest::Reporters::SpecReporter.new
 ActiveMerchant::Billing::Base.mode = :test

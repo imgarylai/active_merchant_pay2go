@@ -1,7 +1,6 @@
-# encoding: utf-8
 require 'test_helper'
 
-class Pay2goHelperTest < Test::Unit::TestCase
+class Pay2goHelperTest < Minitest::Test
   include OffsitePayments::Integrations
 
   def setup
