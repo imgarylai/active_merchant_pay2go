@@ -46,7 +46,7 @@ module OffsitePayments #:nodoc:
         )
 
         FIELDS.each do |field|
-          mapping field.underscore, field
+          mapping field.underscore.to_sym, field
         end
         mapping :account, 'MerchantID' # AM common
         mapping :amount, 'Amt' # AM common
