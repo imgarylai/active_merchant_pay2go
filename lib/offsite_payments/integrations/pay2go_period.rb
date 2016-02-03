@@ -3,12 +3,12 @@ require 'digest'
 
 module OffsitePayments #:nodoc:
   module Integrations #:nodoc:
-    module Pay2go
+    module Pay2goPeriod
 
-      VERSION = '1.2'
+      VERSION = '1.0'
       RESPOND_TYPE = 'String'
-      CHECK_VALUE_FIELDS = %w(Amt MerchantID MerchantOrderNo TimeStamp Version)
-      CHECK_CODE_FIELDS = %w(Amt MerchantID MerchantOrderNo TradeNo)
+      CHECK_VALUE_FIELDS = %w(PeriodAmt MerchantID MerchantOrderNo TimeStamp PeriodType)
+      CHECK_CODE_FIELDS = %w(PeriodType MerchantID MerchantOrderNo)
 
       mattr_accessor :service_url
       mattr_accessor :merchant_id
@@ -20,11 +20,11 @@ module OffsitePayments #:nodoc:
         mode = ActiveMerchant::Billing::Base.mode
         case mode
           when :production
-            'https://api.pay2go.com/MPG/mpg_gateway'
+            'https://api.pay2go.com/API/PeriodAPI'
           when :development
-            'https://capi.pay2go.com/MPG/mpg_gateway'
+            'https://capi.pay2go.com/API/PeriodAPI'
           when :test
-            'https://capi.pay2go.com/MPG/mpg_gateway'
+            'https://capi.pay2go.com/API/PeriodAPI'
           else
             raise StandardError, "Integration mode set to an invalid value: #{mode}"
         end
@@ -40,22 +40,20 @@ module OffsitePayments #:nodoc:
 
       class Helper < OffsitePayments::Helper
         FIELDS = %w(
-          MerchantID LangType MerchantOrderNo Amt ItemDesc TradeLimit ExpireDate ReturnURL NotifyURL CustomerURL
-          ClientBackURL Email EmailModify LoginType OrderComment CREDIT CreditRed InstFlag UNIONPAY WEBATM VACC
-          CVS BARCODE CUSTOM TokenTerm
+          MerchantID MerchantOrderNo PeriodAmt ProdDesc PeriodAmtMode PeriodType PeriodPoint PeriodStartType
+          PeriodTimes ReturnURL ProDetail PeriodMemo PaymentInfo OrderInfo InvoiceInfo NotifyURL
         )
 
         FIELDS.each do |field|
           mapping field.underscore.to_sym, field
         end
         mapping :account, 'MerchantID' # AM common
-        mapping :amount, 'Amt' # AM common
 
         def initialize(order, account, options = {})
           super
           add_field 'MerchantID', OffsitePayments::Integrations::Pay2go.merchant_id
-          add_field 'Version', OffsitePayments::Integrations::Pay2go::VERSION
-          add_field 'RespondType', OffsitePayments::Integrations::Pay2go::RESPOND_TYPE
+          add_field 'Version', OffsitePayments::Integrations::Pay2goPeriod::VERSION
+          add_field 'RespondType', OffsitePayments::Integrations::Pay2goPeriod::RESPOND_TYPE
         end
 
         def time_stamp(date)
@@ -63,20 +61,20 @@ module OffsitePayments #:nodoc:
         end
 
         def encrypted_data
-          raw_data = URI.encode_www_form OffsitePayments::Integrations::Pay2go::CHECK_VALUE_FIELDS.sort.map { |field|
+          raw_data = URI.encode_www_form OffsitePayments::Integrations::Pay2goPeriod::CHECK_VALUE_FIELDS.sort.map { |field|
             [field, @fields[field]]
           }
 
           hash_raw_data = "HashKey=#{OffsitePayments::Integrations::Pay2go.hash_key}&#{raw_data}&HashIV=#{OffsitePayments::Integrations::Pay2go.hash_iv}"
           add_field 'CheckValue', Digest::SHA256.hexdigest(hash_raw_data).upcase
         end
+
       end
 
       class Notification < OffsitePayments::Notification
         PARAMS_FIELDS = %w(
-          Status Message MerchantID Amt TradeNo MerchantOrderNo PaymentType RespondType CheckCode PayTime IP
-          EscrowBank TokenUseStatus RespondCode Auth Card6No Card4No Inst InstFirst InstEach ECI PayBankCode
-          PayerAccount5Code CodeNo BankCode Barcode_1 Barcode_2 Barcode_3 ExpireDate CheckCode
+          Status Message MerchantID MerchantOrderNo PeriodType authDate authTime dateArray PeriodTotalAmt
+          PeriodFirstAmt PeriodAmt CheckCode
         )
 
         PARAMS_FIELDS.each do |field|
@@ -101,7 +99,7 @@ module OffsitePayments #:nodoc:
         end
 
         def checksum_ok?
-          raw_data = URI.encode_www_form OffsitePayments::Integrations::Pay2go::CHECK_CODE_FIELDS.sort.map { |field|
+          raw_data = URI.encode_www_form OffsitePayments::Integrations::Pay2goPeriod::CHECK_CODE_FIELDS.sort.map { |field|
             [field, @params[field]]
           }
 
