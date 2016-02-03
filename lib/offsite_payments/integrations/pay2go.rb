@@ -10,11 +10,18 @@ module OffsitePayments #:nodoc:
       CHECK_VALUE_FIELDS = %w(Amt MerchantID MerchantOrderNo TimeStamp Version)
       CHECK_CODE_FIELDS = %w(Amt MerchantID MerchantOrderNo TradeNo)
 
+      CONFIG = %w(
+        MerchantID LangType TradeLimit ExpireDate NotifyURL EmailModify LoginType
+      )
+
       mattr_accessor :service_url
-      mattr_accessor :merchant_id
       mattr_accessor :hash_key
       mattr_accessor :hash_iv
       mattr_accessor :debug
+
+      CONFIG.each do |field|
+        mattr_accessor field.underscore.to_sym
+      end
 
       def self.service_url
         mode = ActiveMerchant::Billing::Base.mode
@@ -40,9 +47,7 @@ module OffsitePayments #:nodoc:
 
       class Helper < OffsitePayments::Helper
         FIELDS = %w(
-          MerchantID LangType MerchantOrderNo Amt ItemDesc TradeLimit ExpireDate ReturnURL NotifyURL CustomerURL
-          ClientBackURL Email EmailModify LoginType OrderComment CREDIT CreditRed InstFlag UNIONPAY WEBATM VACC
-          CVS BARCODE CUSTOM TokenTerm
+          MerchantID LangType MerchantOrderNo Amt ItemDesc TradeLimit ExpireDate ReturnURL NotifyURL CustomerURL ClientBackURL Email EmailModify LoginType OrderComment CREDIT CreditRed InstFlag UNIONPAY WEBATM VACC CVS BARCODE CUSTOM TokenTerm
         )
 
         FIELDS.each do |field|
@@ -53,9 +58,11 @@ module OffsitePayments #:nodoc:
 
         def initialize(order, account, options = {})
           super
-          add_field 'MerchantID', OffsitePayments::Integrations::Pay2go.merchant_id
           add_field 'Version', OffsitePayments::Integrations::Pay2go::VERSION
           add_field 'RespondType', OffsitePayments::Integrations::Pay2go::RESPOND_TYPE
+          OffsitePayments::Integrations::Pay2go::CONFIG.each do |field|
+            add_field field, OffsitePayments::Integrations::Pay2go.send(field.underscore.to_sym)
+          end
         end
 
         def time_stamp(date)
