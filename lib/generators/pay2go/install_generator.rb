@@ -10,6 +10,10 @@ module Pay2go
         template "pay2go.rb", "config/initializers/pay2go.rb"
       end
 
+      def show_readme
+        readme "README" if behavior == :invoke
+      end
+
     end
   end
 end

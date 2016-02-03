@@ -1,0 +1,11 @@
+===============================================================================
+
+Please check and setup your  `config/initializers/pay2go.rb`
+
+    OffsitePayments::Integrations::Pay2go.setup do |pay2go|
+      pay2go.merchant_id =
+      pay2go.hash_key    =
+      pay2go.hash_iv     = 
+    end
+
+===============================================================================
