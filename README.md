@@ -1,3 +1,4 @@
+[![Gem Version](https://badge.fury.io/rb/active_merchant_pay2go.svg)](https://badge.fury.io/rb/active_merchant_pay2go)
 [![Build Status](https://travis-ci.org/imgarylai/active_merchant_pay2go.svg?branch=master)](https://travis-ci.org/imgarylai/active_merchant_pay2go)
 [![Code Climate](https://codeclimate.com/github/imgarylai/active_merchant_pay2go/badges/gpa.svg)](https://codeclimate.com/github/imgarylai/active_merchant_pay2go)
 
