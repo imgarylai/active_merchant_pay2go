@@ -1,5 +1,7 @@
 # encoding: utf-8
 require 'digest'
+require File.dirname(__FILE__) + '/pay2go/helper.rb'
+require File.dirname(__FILE__) + '/pay2go/notification.rb'
 
 module OffsitePayments #:nodoc:
   module Integrations #:nodoc:
@@ -45,77 +47,6 @@ module OffsitePayments #:nodoc:
         yield(self)
       end
 
-      class Helper < OffsitePayments::Helper
-        FIELDS = %w(
-          MerchantID LangType MerchantOrderNo Amt ItemDesc TradeLimit ExpireDate ReturnURL NotifyURL CustomerURL ClientBackURL Email EmailModify LoginType OrderComment CREDIT CreditRed InstFlag UNIONPAY WEBATM VACC CVS BARCODE CUSTOM TokenTerm
-        )
-
-        FIELDS.each do |field|
-          mapping field.underscore.to_sym, field
-        end
-        mapping :account, 'MerchantID' # AM common
-        mapping :amount, 'Amt' # AM common
-
-        def initialize(order, account, options = {})
-          super
-          add_field 'Version', OffsitePayments::Integrations::Pay2go::VERSION
-          add_field 'RespondType', OffsitePayments::Integrations::Pay2go::RESPOND_TYPE
-          OffsitePayments::Integrations::Pay2go::CONFIG.each do |field|
-            add_field field, OffsitePayments::Integrations::Pay2go.send(field.underscore.to_sym)
-          end
-        end
-
-        def time_stamp(date)
-          add_field 'TimeStamp', date.to_time.to_i
-        end
-
-        def encrypted_data
-          raw_data = URI.encode_www_form OffsitePayments::Integrations::Pay2go::CHECK_VALUE_FIELDS.sort.map { |field|
-            [field, @fields[field]]
-          }
-
-          hash_raw_data = "HashKey=#{OffsitePayments::Integrations::Pay2go.hash_key}&#{raw_data}&HashIV=#{OffsitePayments::Integrations::Pay2go.hash_iv}"
-          add_field 'CheckValue', Digest::SHA256.hexdigest(hash_raw_data).upcase
-        end
-      end
-
-      class Notification < OffsitePayments::Notification
-        PARAMS_FIELDS = %w(
-          Status Message MerchantID Amt TradeNo MerchantOrderNo PaymentType RespondType CheckCode PayTime IP
-          EscrowBank TokenUseStatus RespondCode Auth Card6No Card4No Inst InstFirst InstEach ECI PayBankCode
-          PayerAccount5Code CodeNo BankCode Barcode_1 Barcode_2 Barcode_3 ExpireDate CheckCode
-        )
-
-        PARAMS_FIELDS.each do |field|
-          define_method field.underscore do
-            @params[field]
-          end
-        end
-
-        def success?
-          status == 'SUCCESS'
-        end
-
-        # TODO 使用查詢功能實作 acknowledge
-        # Pay2go 沒有遠端驗證功能，
-        # 而以 checksum_ok? 代替
-        def acknowledge
-          checksum_ok?
-        end
-
-        def complete?
-          %w(SUCCESS CUSTOM).include? status
-        end
-
-        def checksum_ok?
-          raw_data = URI.encode_www_form OffsitePayments::Integrations::Pay2go::CHECK_CODE_FIELDS.sort.map { |field|
-            [field, @params[field]]
-          }
-
-          hash_raw_data = "HashIV=#{OffsitePayments::Integrations::Pay2go.hash_iv}&#{raw_data}&HashKey=#{OffsitePayments::Integrations::Pay2go.hash_key}"
-          Digest::SHA256.hexdigest(hash_raw_data).upcase == check_code
-        end
-      end
     end
   end
 end
