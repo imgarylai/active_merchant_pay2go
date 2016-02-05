@@ -8,7 +8,6 @@ require 'uri'
 module OffsitePayments
   module Integrations
     autoload :Pay2go, 'offsite_payments/integrations/pay2go'
-    autoload :Pay2goPeriod, 'offsite_payments/integrations/pay2go_period'
   end
 end
 
