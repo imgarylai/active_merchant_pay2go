@@ -4,6 +4,8 @@
 
 # ActiveMerchantPay2go
 
+[![Join the chat at https://gitter.im/imgarylai/active_merchant_pay2go](https://badges.gitter.im/imgarylai/active_merchant_pay2go.svg)](https://gitter.im/imgarylai/active_merchant_pay2go?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 This gem integrate Rails with [pay2go(智付寶)](https://www.pay2go.com/).
 
 It was inspired by [active_merchant_allpay](https://github.com/xwaynec/active_merchant_allpay).
