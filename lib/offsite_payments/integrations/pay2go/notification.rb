@@ -7,8 +7,8 @@ module OffsitePayments #:nodoc:
       class Notification < OffsitePayments::Notification
         PARAMS_FIELDS = %w(
           Status Message MerchantID Amt TradeNo MerchantOrderNo PaymentType RespondType CheckCode PayTime IP
-          EscrowBank TokenUseStatus RespondCode Auth Card6No Card4No Inst InstFirst InstEach ECI PayBankCode
-          PayerAccount5Code CodeNo BankCode Barcode_1 Barcode_2 Barcode_3 ExpireDate CheckCode
+          EscrowBank TokenUseStatus RedAmt RespondCode Auth Card6No Card4No Inst InstFirst InstEach ECI PayBankCode
+          PayerAccount5Code CodeNo BankCode Barcode_1 Barcode_2 Barcode_3 ExpireDate ExpireTime CheckCode
         )
 
         PARAMS_FIELDS.each do |field|
