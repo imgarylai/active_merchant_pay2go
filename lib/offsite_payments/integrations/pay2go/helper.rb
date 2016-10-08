@@ -6,7 +6,7 @@ module OffsitePayments #:nodoc:
     module Pay2go
       class Helper < OffsitePayments::Helper
         FIELDS = %w(
-          MerchantID LangType MerchantOrderNo Amt ItemDesc TradeLimit ExpireDate ReturnURL NotifyURL CustomerURL ClientBackURL Email EmailModify LoginType OrderComment CREDIT CreditRed InstFlag UNIONPAY WEBATM VACC CVS BARCODE CUSTOM TokenTerm
+          MerchantID LangType MerchantOrderNo Amt ItemDesc TradeLimit ExpireDate ExpireTime ReturnURL NotifyURL CustomerURL ClientBackURL Email EmailModify LoginType OrderComment CREDIT CreditRed InstFlag UNIONPAY WEBATM VACC CVS BARCODE CUSTOM TokenTerm
         )
 
         FIELDS.each do |field|
