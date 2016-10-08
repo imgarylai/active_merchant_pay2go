@@ -6,35 +6,36 @@
 
 [![Join the chat at https://gitter.im/imgarylai/active_merchant_pay2go](https://badges.gitter.im/imgarylai/active_merchant_pay2go.svg)](https://gitter.im/imgarylai/active_merchant_pay2go?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-This gem integrate Rails with [pay2go(智付寶)](https://www.pay2go.com/).
+這個 gem 的目的是要串接 [pay2go(智付寶)](https://www.pay2go.com/) 的金流，不過不是只有單純的 API 封裝，是透過 [active_merchant](https://github.com/activemerchant/active_merchant) 和 [offsite_payments](https://github.com/activemerchant/offsite_payments) 包裝後可以快速的在 Rails 上使用。
 
-It was inspired by [active_merchant_allpay](https://github.com/xwaynec/active_merchant_allpay).
+另外非常感謝 [active_merchant_allpay](https://github.com/xwaynec/active_merchant_allpay)。
 
-## Installation
+## 安裝
 
-Add this line to your application's Gemfile:
+Gemfile 中加入這一行
 
 ```ruby
 gem 'active_merchant_pay2go'
 ```
 
-And then execute:
+透過 bundle 安裝:
 
 ```
 $ bundle
 ```
 
-## Setup
+## 設定
 
-- I would suggest reading the [official API](https://www.pay2go.com/dw_files/info_api/pay2go_gateway_MPGapi_V1_1_8.pdf) first.
+- 建議第一次使用的人可以先看一下官方的文件... [official API](https://www.pay2go.com/dw_files/info_api/pay2go_gateway_MPGapi_V1_1_8.pdf) 。
 
-- Create file `config/initializers/pay2go.rb`
+- 建立 `config/initializers/pay2go.rb`
 ``` sh
 rails g pay2go:install
 ```
 
-- Go to Pay2go and get your credential information. Then fill in `config/initializers/pay2go.rb`
+- 到智付寶上申請申請相關的 key 並放入 `config/initializers/pay2go.rb` 中。
 ```rb
+# Example
 OffsitePayments::Integrations::Pay2go.setup do |pay2go|
   # You have to apply credential below by yourself.
   pay2go.merchant_id = '123456'
@@ -43,7 +44,7 @@ OffsitePayments::Integrations::Pay2go.setup do |pay2go|
 end
 ```
 
-- Environment configuration:
+- 環境設定:
 ```rb
 # config/environments/development.rb
 config.after_initialize do
@@ -57,9 +58,9 @@ config.after_initialize do
 end
 ```
 
-## Example
+## 範例
 
-```
+```erb
 <% payment_service_for  @order,
                         @order.user.email,
                         service: :pay2go,
@@ -74,12 +75,11 @@ end
   <%= submit_tag '付款' %>
 <% end %>
 ```
-This example code only fulfill the min requirements.
+這段程式碼只有實做了很基本的功能。
 
-To customize settings, you should read the documents.
-I put some comments in the [code](https://github.com/imgarylai/active_merchant_pay2go/blob/master/lib/offsite_payments/integrations/pay2go.rb) as well!
+如果有更多的設定，建議看一下官方文件有沒有支援。
 
-Here is an [example app](https://github.com/imgarylai/rails_active_merchant_pay2go) though it is really rough.
+[範例](https://github.com/imgarylai/rails_active_merchant_pay2go) （很簡陋的範例）.
 
 ## Contributing
 
