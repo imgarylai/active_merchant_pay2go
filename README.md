@@ -26,7 +26,7 @@ $ bundle
 
 ## Setup
 
-- I would suggest reading the [official API](https://www.pay2go.com/dw_files/info_api/pay2go_gateway_MPGapi_V1_1_4.pdf) first.
+- I would suggest reading the [official API](https://www.pay2go.com/dw_files/info_api/pay2go_gateway_MPGapi_V1_1_8.pdf) first.
 
 - Create file `config/initializers/pay2go.rb`
 ``` sh
