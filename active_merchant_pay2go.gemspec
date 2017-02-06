@@ -22,8 +22,6 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'activemerchant', '~> 1.60'
   spec.add_dependency 'offsite_payments', '~> 2'
 
-  spec.add_development_dependency 'bundler', '~> 1.13'
-  spec.add_development_dependency 'rake', '~> 11.2'
   spec.add_development_dependency 'rails', '>= 3.2.6', '< 6'
 
 end
