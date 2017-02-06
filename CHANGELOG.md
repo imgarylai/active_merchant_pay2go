@@ -1,5 +1,10 @@
 = ActiveMerchantPay2go CHANGELOG
 
+== Version 0.2.0 (Feb 6, 2017)
+- change pay2go API endpoint to new namespace
+- Fix travis ci build errors
+- Add ruby-2.4.0 to travis
+
 == Version 0.1.6 (Oct 8, 2016)
 - update activemerchant version to from '~> 1.50' to '~> 1.60'
 - update bundler version to from '~> 1.10' to '~> 1.13'
