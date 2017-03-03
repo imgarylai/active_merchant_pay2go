@@ -6,7 +6,7 @@
 
 [![Join the chat at https://gitter.im/imgarylai/active_merchant_pay2go](https://badges.gitter.im/imgarylai/active_merchant_pay2go.svg)](https://gitter.im/imgarylai/active_merchant_pay2go?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-這個 gem 的目的是要串接 [pay2go(智付寶)](https://www.pay2go.com/) 的金流，不過不是只有單純的 API 封裝，是透過 [active_merchant](https://github.com/activemerchant/active_merchant) 和 [offsite_payments](https://github.com/activemerchant/offsite_payments) 包裝後可以快速的在 Rails 上使用。
+這個 gem 的目的是要串接 [智付通（原智付寶）](https://www.spgateway.com) 的金流，不過不是只有單純的 API 封裝，是透過 [active_merchant](https://github.com/activemerchant/active_merchant) 和 [offsite_payments](https://github.com/activemerchant/offsite_payments) 包裝後可以快速的在 Rails 上使用。
 
 另外非常感謝 [active_merchant_allpay](https://github.com/xwaynec/active_merchant_allpay)。
 
@@ -26,7 +26,7 @@ $ bundle
 
 ## 設定
 
-- 建議第一次使用的人可以先看一下官方的文件... [official API](https://www.pay2go.com/dw_files/info_api/pay2go_gateway_MPGapi_V1_1_8.pdf) 。
+- 建議第一次使用的人可以先看一下官方的文件... [Official API](https://www.spgateway.com/dw_files/info_api/spgateway_gateway_MPGapi_V1_0_3.pdf) 。
 
 - 建立 `config/initializers/pay2go.rb`
 ``` sh
