@@ -1,4 +1,5 @@
 # encoding: utf-8
+require 'openssl'
 require 'digest'
 
 module OffsitePayments #:nodoc:
@@ -27,12 +28,22 @@ module OffsitePayments #:nodoc:
           add_field 'TimeStamp', date.to_time.to_i
         end
         def encrypted_data
-          raw_data = URI.encode_www_form OffsitePayments::Integrations::Pay2go::CHECK_VALUE_FIELDS.sort.map { |field|
+          key = OffsitePayments::Integrations::Pay2go.hash_key
+          iv = OffsitePayments::Integrations::Pay2go.hash_iv
+
+          aes = OpenSSL::Cipher.new('AES-256-CBC')
+          aes.encrypt
+          aes.key = key
+          aes.iv = iv
+
+          raw_data = URI.encode_www_form OffsitePayments::Integrations::Pay2go::CHECK_VALUE_FIELDS.map { |field|
             [field, @fields[field]]
           }
 
-          hash_raw_data = "HashKey=#{OffsitePayments::Integrations::Pay2go.hash_key}&#{raw_data}&HashIV=#{OffsitePayments::Integrations::Pay2go.hash_iv}"
-          add_field 'CheckValue', Digest::SHA256.hexdigest(hash_raw_data).upcase
+          trade_info = (aes.update(raw_data) + aes.final).unpack('H*').first
+
+          add_field 'TradeInfo', trade_info
+          add_field 'TradeSha', Digest::SHA256.hexdigest("HashKey=#{key}&#{trade_info}&HashIV=#{iv}").upcase
         end
       end
 

@@ -7,10 +7,10 @@ module OffsitePayments #:nodoc:
   module Integrations #:nodoc:
     module Pay2go
 
-      VERSION = '1.2'
+      VERSION = '1.4'
       RESPOND_TYPE = 'String'
-      CHECK_VALUE_FIELDS = %w(Amt MerchantID MerchantOrderNo TimeStamp Version)
-      CHECK_CODE_FIELDS = %w(Amt MerchantID MerchantOrderNo TradeNo)
+      CHECK_VALUE_FIELDS = %w(MerchantID RespondType TimeStamp Version MerchantOrderNo Amt ItemDesc)
+      CHECK_CODE_FIELDS = %w(MerchantID RespondType TimeStamp Version MerchantOrderNo Amt ItemDesc)
 
       CONFIG = %w(
         MerchantID LangType TradeLimit ExpireDate NotifyURL EmailModify LoginType
