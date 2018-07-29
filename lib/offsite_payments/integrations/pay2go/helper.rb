@@ -27,6 +27,20 @@ module OffsitePayments #:nodoc:
         def time_stamp(date)
           add_field 'TimeStamp', date.to_time.to_i
         end
+        def detail(data)
+          add_field 'Receiver', data[:receiver]
+          add_field 'Tel1', data[:phones].first
+          add_field 'Tel2', data[:phones].last
+          add_field 'Count', data[:items].count
+          data[:items].each_with_index do |item, index|
+            i = index + 1
+            add_field "Pid#{i}", item[:pid]
+            add_field "Title#{i}", item[:name]
+            add_field "Desc#{i}", item[:description]
+            add_field "Price#{i}", item[:price]
+            add_field "Qty#{i}", item[:quantity]
+          end
+        end
         def encrypted_data
           key = OffsitePayments::Integrations::Pay2go.hash_key
           iv = OffsitePayments::Integrations::Pay2go.hash_iv
