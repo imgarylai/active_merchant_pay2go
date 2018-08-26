@@ -28,20 +28,24 @@ module OffsitePayments #:nodoc:
           add_field 'TimeStamp', date.to_time.to_i
         end
         def detail(data)
-          add_field 'Receiver', data[:receiver]
-          add_field 'Tel1', data[:phones].first
-          add_field 'Tel2', data[:phones].last
-          add_field 'Count', data[:items].count
+          detail = {}
+          return detail if data.blank?
+
+          detail['Receiver'] = data[:receiver]
+          detail['Tel1'] = data[:phones].first
+          detail['Tel2'] = data[:phones].last
+          detail['Count'] = data[:items].count
           data[:items].each_with_index do |item, index|
             i = index + 1
-            add_field "Pid#{i}", item[:pid]
-            add_field "Title#{i}", item[:name]
-            add_field "Desc#{i}", item[:description]
-            add_field "Price#{i}", item[:price]
-            add_field "Qty#{i}", item[:quantity]
+            detail["Pid#{i}"] = item[:pid]
+            detail["Title#{i}"] = item[:name]
+            detail["Desc#{i}"] = item[:description]
+            detail["Price#{i}"] = item[:price]
+            detail["Qty#{i}"] = item[:quantity]
           end
+          detail
         end
-        def encrypted_data
+        def encrypted_data(detail = {})
           key = OffsitePayments::Integrations::Pay2go.hash_key
           iv = OffsitePayments::Integrations::Pay2go.hash_iv
 
@@ -50,10 +54,7 @@ module OffsitePayments #:nodoc:
           aes.key = key
           aes.iv = iv
 
-          raw_data = URI.encode_www_form OffsitePayments::Integrations::Pay2go::CHECK_VALUE_FIELDS.map { |field|
-            [field, @fields[field]]
-          }
-
+          raw_data = URI.encode_www_form @fields.merge(detail(detail))
           trade_info = (aes.update(raw_data) + aes.final).unpack('H*').first
 
           add_field 'TradeInfo', trade_info
