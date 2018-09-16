@@ -15,6 +15,20 @@ module OffsitePayments #:nodoc:
           end
         end
 
+        def trade_info
+          key = OffsitePayments::Integrations::Pay2go.hash_key
+          iv = OffsitePayments::Integrations::Pay2go.hash_iv
+
+          aes = OpenSSL::Cipher.new('AES-256-CBC')
+          aes.decrypt
+          aes.padding = 0
+          aes.key = key
+          aes.iv = iv
+
+          raw_data = aes.update([trade_info].pack('H*')) + aes.final
+          URI.decode_www_form(raw_data).to_h
+        end
+
         TRADE_INFO_FIELDS = %w(
           Message Amt TradeNo MerchantOrderNo PaymentType RespondType CheckCode PayTime IP
           EscrowBank TokenUseStatus RedAmt RespondCode Auth Card6No Card4No Inst InstFirst InstEach ECI PayBankCode
@@ -23,17 +37,7 @@ module OffsitePayments #:nodoc:
 
         TRADE_INFO_FIELDS.each do |field|
           define_method field.underscore do
-            key = OffsitePayments::Integrations::Pay2go.hash_key
-            iv = OffsitePayments::Integrations::Pay2go.hash_iv
-
-            aes = OpenSSL::Cipher.new('AES-256-CBC')
-            aes.decrypt
-            aes.padding = 0
-            aes.key = key
-            aes.iv = iv
-
-            raw_data = aes.update([trade_info].pack('H*')) + aes.final
-            URI.decode_www_form(raw_data).to_h[field]
+            trade_info[field]
           end
         end
 
