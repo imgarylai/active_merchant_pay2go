@@ -15,6 +15,7 @@ module OffsitePayments #:nodoc:
           end
         end
 
+        # Overrides above define_method
         def trade_info
           key = OffsitePayments::Integrations::Pay2go.hash_key
           iv = OffsitePayments::Integrations::Pay2go.hash_iv
@@ -25,7 +26,7 @@ module OffsitePayments #:nodoc:
           aes.key = key
           aes.iv = iv
 
-          raw_data = aes.update([trade_info].pack('H*')) + aes.final
+          raw_data = aes.update([@params['TradeInfo']].pack('H*')) + aes.final
           URI.decode_www_form(raw_data).to_h
         end
 
