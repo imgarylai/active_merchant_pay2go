@@ -61,17 +61,7 @@ module OffsitePayments #:nodoc:
           key = OffsitePayments::Integrations::Pay2go.hash_key
           iv = OffsitePayments::Integrations::Pay2go.hash_iv
 
-          aes = OpenSSL::Cipher.new('AES-256-CBC')
-          aes.encrypt
-          aes.key = key
-          aes.iv = iv
-
-          raw_data = URI.encode_www_form OffsitePayments::Integrations::Pay2go::CHECK_CODE_FIELDS.map { |field|
-            [field, @params[field]]
-          }
-
-          trade_info = (aes.update(raw_data) + aes.final).unpack('H*').first
-          Digest::SHA256.hexdigest("HashKey=#{key}&#{trade_info}&HashIV=#{iv}").upcase == trade_sha
+          Digest::SHA256.hexdigest("HashKey=#{key}&#{@params['TradeInfo']}&HashIV=#{iv}").upcase == trade_sha
         end
       end
     end
