@@ -6,14 +6,34 @@ module OffsitePayments #:nodoc:
     module Pay2go
       class Notification < OffsitePayments::Notification
         PARAMS_FIELDS = %w(
-          Status Message MerchantID Amt TradeNo MerchantOrderNo PaymentType RespondType CheckCode PayTime IP
-          EscrowBank TokenUseStatus RedAmt RespondCode Auth Card6No Card4No Inst InstFirst InstEach ECI PayBankCode
-          PayerAccount5Code CodeNo BankCode Barcode_1 Barcode_2 Barcode_3 ExpireDate ExpireTime Version TradeInfo TradeSha
+          Status MerchantID TradeInfo TradeSha Version
         )
 
         PARAMS_FIELDS.each do |field|
           define_method field.underscore do
             @params[field]
+          end
+        end
+
+        TRADE_INFO_FIELDS = %w(
+          Message Amt TradeNo MerchantOrderNo PaymentType RespondType CheckCode PayTime IP
+          EscrowBank TokenUseStatus RedAmt RespondCode Auth Card6No Card4No Inst InstFirst InstEach ECI PayBankCode
+          PayerAccount5Code CodeNo BankCode Barcode_1 Barcode_2 Barcode_3 ExpireDate ExpireTime
+        )
+
+        TRADE_INFO_FIELDS.each do |field|
+          define_method field.underscore do
+            key = OffsitePayments::Integrations::Pay2go.hash_key
+            iv = OffsitePayments::Integrations::Pay2go.hash_iv
+
+            aes = OpenSSL::Cipher.new('AES-256-CBC')
+            aes.decrypt
+            aes.padding = 0
+            aes.key = key
+            aes.iv = iv
+
+            raw_data = aes.update([trade_info].pack('H*')) + aes.final
+            URI.decode_www_form(raw_data).to_h[field]
           end
         end
 
